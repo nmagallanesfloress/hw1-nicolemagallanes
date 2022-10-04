@@ -46,7 +46,7 @@ Define mechanistic. Define empirically-driven. How do these model types differ? 
 
 In general, is a mechanistic or empirically-driven model easier to understand? Explain your choice.
 
-Describe how the bias-variance tradeoff is related to the use of mechanistic or empirically-driven models.
+Describe how the bias-variance trade off is related to the use of mechanistic or empirically-driven models.
 
 ### Question 6
 
@@ -58,5 +58,17 @@ How would a voter’s likelihood of support for the candidate change if they had
 
 Classify each question as either predictive or inferential. Explain your reasoning for each.
 
+## Exploratory Data Analysis
 
+### Exercise 1
+
+### Exercise 2
+
+### Exercise 3
+
+### Exercise 4
+
+### Exercise 5
+
+##
 
