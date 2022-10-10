@@ -1,12 +1,14 @@
 ---
 title: "Homework 1"
-subtitle: "PSTAT 131/231"
-author: Nicole Magallanes
+author: "Nicole Magallanes"
+subtitle: PSTAT 131/231
 output:
   html_document:
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
     code_folding: show
+  pdf_document:
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -20,19 +22,19 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
 
 Define supervised and unsupervised learning. What are the difference(s) between them?
 
-**Answer:** Supervised learning is a machine learning approach that is built to train or supervise algorithms to estimate or predict outcomes based on the given inputs. This approach uses labeled inputs and outputs. Unsupervised learning is an approach that takes in inputs but does not have any supervising outputs. These algorithms can help to analyze and cluster unlabeled data. The main difference between these two approaches is that unsupervised learning does not have any supervising outputs, while supervised learning has labeled inputs and outputs. Also, in supervised learning the algorithm learns from its given training set while unsupervised learning mostly works on its own to discover patterns within the unlabeled data. For the most part, supervised learning models tend to be more accurate than unsupervised models. 
+**Answer:** Supervised learning is a machine learning approach that is built to train or supervise algorithms to estimate or predict outcomes based on the given inputs. This approach uses labeled inputs and outputs. Unsupervised learning is an approach that takes in inputs but does not have any supervising outputs. These algorithms can help to analyze and cluster unlabeled data. The main difference between these two approaches is that unsupervised learning does not have any supervising outputs, while supervised learning has labeled inputs and outputs. Also, in supervised learning the algorithm learns from its given training set while unsupervised learning mostly works on its own to discover patterns within the unlabeled data. For the most part, supervised learning models tend to be more accurate than unsupervised models. Supervised learning can includes linear regression, logistic regression, decision trees, among others; unsupervised data includes k-means clustering, hierarchical clustering and neural networks. 
 
 ### Question 2
 
 Explain the difference between a regression model and a classification model, specifically in the context of machine learning.
 
-**Answer:** The difference between a classification and a regression model is that classification models in machine learning are used to assign data into specific categories while regression models are used to understand the relationships between dependent and independent variables. An example of a classification model in the real world can be spam detection in emails, an example of a regression model can be predicting the impact of test scores on college admissions. 
+**Answer:** The difference between a classification and a regression model is that classification models in machine learning are used to assign data into specific categories while regression models are used to understand the relationships between dependent and independent variables. An example of a classification model in the real world can be spam detection in emails, an example of a regression model can be predicting the impact of test scores on college admissions. Regression is quantitative while classification in qualitative.
 
 ### Question 3
 
 Name two commonly used metrics for regression ML problems. Name two commonly used metrics for classification ML problems.
 
-**Answer:**
+**Answer:** For regression ML problems, two commonly used metrics are MSE and RMSE. For classification ML problems, two commonly used metrics are accuracy and error rate.
 
 ### Question 4
 
@@ -40,11 +42,11 @@ As discussed, statistical models can be used for different purposes. These purpo
 
 **Answer:**
 
-Descriptive models:
+Descriptive models: These models are used when trying to visually understand trends in the data. This model is helpful to understand the given data and it relationship with the variables within it through methods such as summarizing and classifying. 
 
-Inferential models:
+Inferential models: The aim of this model is put theories to test and find the relationship between predictors and outcomes. This model allows you to identify which variables are significant within the data.
 
-Predictive models:
+Predictive models: Predictive models aim to "predict Y with minimum reducible error" (Lecture #1 slides). This model is not focused on hypothesis testing, but rather figuring out what variables work together best to fit the data.
 
 ### Question 5
 
@@ -52,15 +54,15 @@ Predictive models are frequently used in machine learning, and they can usually 
 
 Define mechanistic. Define empirically-driven. How do these model types differ? How are they similar?
 
-**Answer:**
+**Answer:** Mechanistic models assume a parametric form for f, they can add more parameters for more flexibility and wont match true unknown f (Lecture 1 slides). Mechanistic models are helpful to provide understanding of the mechanistic functions of treatments and are useful to overcome the limitations that come with ML predictions. Empirically-driven models don't have assumptions about f, they require a larger amount of observations and are more flexible. (Lecture 1 slides).
 
 In general, is a mechanistic or empirically-driven model easier to understand? Explain your choice.
 
-**Answer:**
+**Answer:** In general, I would say mechanistic models are easier to understand because they use theory to understand data and outcomes. They also need few input data point to make a prediction and can make predictions outside the range of previous input values. 
 
 Describe how the bias-variance trade off is related to the use of mechanistic or empirically-driven models.
 
-**Answer:**
+**Answer:** The bias-variance trade off is related to the use of the models because we always want to use an algorithm that doesn't under fit or over fit the data. The bias-variance trade off is essentially finding the right balance of values, as the increase of the variance or bias will lead to the decrease of the other, to make sure a model is accurate and decreases prediction errors.
 
 ### Question 6
 
@@ -72,18 +74,71 @@ How would a voter’s likelihood of support for the candidate change if they had
 
 Classify each question as either predictive or inferential. Explain your reasoning for each.
 
-**Answer:**
+**Answer:** First one is predictive, second is inferential
 
 ## Exploratory Data Analysis
+```{r}
+# install.packages("tidyverse")
+# install.packages("tidymodels")
+# install.packages("ISLR")
+
+library(tidyverse)
+library(tidymodels)
+library(ISLR)
+library(ggplot2)
+library(corrplot)
+
+view(mpg)
+```
 
 ### Exercise 1
+We are interested in highway miles per gallon, or the hwy variable. Create a histogram of this variable. Describe what you see/learn.
+
+```{r}
+mpg %>%
+  ggplot(aes(x=hwy)) +
+  geom_histogram(bins=30)
+
+mpg %>%
+  ggplot(aes(x=hwy)) +
+  geom_histogram(bins=60)
+```
+
+What i noticed through this histogram...
 
 ### Exercise 2
-
+```{r}
+mpg %>%
+  ggplot(aes(x=hwy, y=cty)) +
+  geom_point(color='purple', size=1)
+```
+Here we can see that...
+ 
 ### Exercise 3
+```{r}
+barplot <- ggplot(mpg, aes(x=reorder(manufacturer, manufacturer, length))) + geom_bar()
+barplot + coord_flip()
+
+```
+The manufacturer that produced the most cars is ... The manufacturer that produced the least cars is...
 
 ### Exercise 4
+```{r}
+mpg %>%
+  ggplot(aes(x = hwy, y = reorder(cyl, hwy))) + 
+  geom_boxplot() +
+  theme_bw()
+```
+
 
 ### Exercise 5
+```{r}
+mpg %>% 
+  select(is.numeric) %>% 
+  cor() %>% 
+  corrplot(type = 'lower', diag = FALSE, 
+           method = 'color')
+```
+
 
 
