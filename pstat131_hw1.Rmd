@@ -3,12 +3,12 @@ title: "Homework 1"
 author: "Nicole Magallanes"
 subtitle: PSTAT 131/231
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     toc_float: yes
     code_folding: show
-  pdf_document:
-    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -74,7 +74,7 @@ How would a voter’s likelihood of support for the candidate change if they had
 
 Classify each question as either predictive or inferential. Explain your reasoning for each.
 
-**Answer:** First one is predictive, second is inferential
+**Answer:** The first question is a predictive one, the question is asking to predict the percentage of likeliness that the voter would vote in favor of the candidate with their given profile. For this question we would have to use the data given to us about the voter to make this prediction. The second question is an inferential one, with this question we we are asked to find the relationships between variables within the data. In this case the variables would be the likelihood of support and that thy had personal contact with the candidate. 
 
 ## Exploratory Data Analysis
 ```{r}
@@ -97,39 +97,42 @@ We are interested in highway miles per gallon, or the hwy variable. Create a his
 ```{r}
 mpg %>%
   ggplot(aes(x=hwy)) +
+  labs(x="Highway Miles per Gallon", y="Count") +
   geom_histogram(bins=30)
-
-mpg %>%
-  ggplot(aes(x=hwy)) +
-  geom_histogram(bins=60)
 ```
 
-What i noticed through this histogram...
+We can see that the distribution for hwy is slightly skewed to the right, meaning that there is a good amoount of values that are at the lower end of the graph and it has a tail to the right. 
 
 ### Exercise 2
 ```{r}
 mpg %>%
   ggplot(aes(x=hwy, y=cty)) +
+  labs(x="Highway Miles per Gallon", y="City Miles per Gallon") +
   geom_point(color='purple', size=1)
 ```
-Here we can see that...
+
+In this scatter plot we can see that there is a linear relationship between hwy and cty. As the values for hwy increase, the values for cty also increase. This relationship can tell us that as the value is high for the city, values for the highway will also be high, and it would be the same the other way around. 
  
 ### Exercise 3
 ```{r}
-barplot <- ggplot(mpg, aes(x=reorder(manufacturer, manufacturer, length))) + geom_bar()
+barplot <- ggplot(mpg, aes(x=reorder(manufacturer, manufacturer, length))) + 
+  labs(x="Manufacturer", y="Count") +
+  geom_bar()
 barplot + coord_flip()
 
 ```
-The manufacturer that produced the most cars is ... The manufacturer that produced the least cars is...
+According to this bar plot, the manufacturer that produced the most cars is Dodge, while the manufacturer that produced the least cars is Lincoln. 
 
 ### Exercise 4
 ```{r}
 mpg %>%
   ggplot(aes(x = hwy, y = reorder(cyl, hwy))) + 
+  labs(x="Highway Miles per Gallon", y="Cylinder") +
   geom_boxplot() +
   theme_bw()
 ```
 
+Some of the patterns I can see through this box plot is that the smaller cyl is, the higher the values are for hwy. The same is for the other way around, the bigger the value is for cyl, the smaller it is for hwy. I can also see that the the highest and lowest values of cyl have outliers.  
 
 ### Exercise 5
 ```{r}
@@ -140,5 +143,5 @@ mpg %>%
            method = 'color')
 ```
 
-
+The values that are positively correlated are hwy and cty, cyl and displ, year and displ, cyl and year. The values that are negatively correlated are hwy and displ, cty and displ, hwy and cyl, and lastly cty and cyl. Most of these relationships make sense to me, one that did surprise me that has a strong negative correlation is displ and cty. 
 
